@@ -7,6 +7,14 @@ Sit Spot is a local-first nature listening application designed to encourage peo
 
 ---
 
+## Demo Walkthrough
+
+![Sit Spot Demo Preview](assets/sit-spot-demo.gif)
+
+*Full demo recording (62s): [assets/sit-spot-demo.mp4](assets/sit-spot-demo.mp4)*
+
+---
+
 ## What Sit Spot Does
 
 1. **Distraction-Free Outdoor Listening**: A true dark screen mode minimizes screen glare and notifications while you sit quietly outdoors.
