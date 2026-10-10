@@ -38,5 +38,19 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_prefix="SITSPOT_")
 
+    @property
+    def model_path(self) -> Path:
+        p = self.models_dir / "yamnet.onnx"
+        if not p.exists() and (Path("../models/yamnet.onnx")).exists():
+            return Path("../models/yamnet.onnx").resolve()
+        return p.resolve()
+
+    @property
+    def class_map_path(self) -> Path:
+        p = self.models_dir / "yamnet_class_map.csv"
+        if not p.exists() and (Path("../models/yamnet_class_map.csv")).exists():
+            return Path("../models/yamnet_class_map.csv").resolve()
+        return p.resolve()
+
 
 settings = Settings()

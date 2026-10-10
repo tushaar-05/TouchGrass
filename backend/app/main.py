@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
+from .api.routes_session import router as session_router
 
 
 @asynccontextmanager
@@ -30,11 +31,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(session_router)
+
 
 @app.get("/api/health")
 async def health_check():
     """Health check endpoint reporting system status and safety parameters."""
-    model_path = settings.models_dir / "yamnet.onnx"
+    model_path = settings.model_path
     return {
         "status": "healthy",
         "app_name": settings.app_name,

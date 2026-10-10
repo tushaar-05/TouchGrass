@@ -24,11 +24,11 @@ class AudioClassifier(ABC):
         ...
 
     @abstractmethod
-    def analyze(self, audio_path: Path | str) -> list[Detection]:
+    def analyze(self, audio_path: Path | str | bytes) -> list[Detection]:
         """Analyze a local audio recording and return timestamped acoustic detections.
         
         Args:
-            audio_path: Path to the local audio file to analyze.
+            audio_path: Path to the local audio file or raw audio bytes to analyze.
             
         Returns:
             list[Detection]: Ordered list of temporal detections.

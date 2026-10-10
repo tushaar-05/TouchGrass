@@ -104,6 +104,16 @@ To avoid misleading users, Sit Spot groups detection scores into qualitative, do
   $$\text{end\_timestamp} = \min(\text{start\_timestamp} + 0.975, \text{actual\_duration})$$
 - Padded zeros used to satisfy tensor dimensions are strictly masked from user-facing detection intervals.
 
+### 3.6 Temporal Aggregation Across Overlapping Windows
+- Because consecutive windows overlap by 50% (0.4875s hop), an ongoing sound event naturally triggers positive activations across multiple adjacent frames.
+- **Aggregation Engine**: `aggregate_detections()` clusters adjacent or overlapping window detections of the same label where $\Delta t \le 0.50\text{s}$.
+- **Event Representation**:
+  - Start boundary: Earliest timestamp of the cluster.
+  - End boundary: Latest timestamp of the cluster, clamped to actual recording length.
+  - Activation score: **Peak activation score** observed during the contiguous event (not artificially averaged down).
+  - Score band: Qualitative classification based on documented thresholds.
+- **No-Fallback Guarantee**: In production, if model inference fails or model files are missing, the system throws a runtime error. It **never** silently falls back to mock fixture data.
+
 ---
 
 ## 4. Local Offline Operation Guarantee

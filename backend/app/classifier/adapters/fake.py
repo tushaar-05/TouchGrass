@@ -30,10 +30,11 @@ class FakeAudioClassifier(AudioClassifier):
     def model_version(self) -> str:
         return "0.0.0-test"
 
-    def analyze(self, audio_path: Path | str) -> list[Detection]:
-        path = Path(audio_path)
-        if not path.exists():
-            raise FileNotFoundError(f"Audio file not found: {path}")
+    def analyze(self, audio_path: Path | str | bytes) -> list[Detection]:
+        if not isinstance(audio_path, bytes):
+            path = Path(audio_path)
+            if not path.exists():
+                raise FileNotFoundError(f"Audio file not found: {path}")
 
         if self._should_fail:
             raise RuntimeError("Simulated inference failure for error testing.")

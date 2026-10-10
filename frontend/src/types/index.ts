@@ -34,3 +34,26 @@ export interface BackendHealth {
     model_path: string;
   };
 }
+
+export interface AnalysisResponse {
+  session_id: string;
+  duration_seconds: number;
+  sample_count: number;
+  is_silent: boolean;
+  has_clipping_warning: boolean;
+  detections: Detection[];
+  user_guesses: string[];
+  reflection: string;
+  scientific_disclaimer: string;
+}
+
+export interface SavedSession {
+  id: string;
+  timestamp: string;
+  duration_seconds: number;
+  user_guesses: string[];
+  detections: Detection[];
+  reflection: string;
+  user_notes?: string;
+  is_silent: boolean;
+}

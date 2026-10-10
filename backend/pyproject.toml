@@ -34,3 +34,7 @@ packages = ["app"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 asyncio_mode = "auto"
+filterwarnings = [
+    "ignore:.*Using .httpx. with .starlette.testclient.*:DeprecationWarning",
+    "ignore::starlette.exceptions.StarletteDeprecationWarning",
+]
