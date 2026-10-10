@@ -73,7 +73,40 @@ To avoid misleading users, Sit Spot groups detection scores into qualitative, do
 
 ---
 
-## 3. Local Offline Operation Guarantee
+## 3. Audio Preprocessing, Normalization & Quality Policies
+
+### 3.1 Supported Containers & Codecs
+- **WAV**: Uncompressed PCM (16-bit, 24-bit, 32-bit float). Handled directly in-memory via `soundfile` without subprocess overhead when natively 16 kHz.
+- **WebM**: Browser-recorded container (`audio/webm`) with Opus audio codec. Decoded to 16 kHz mono float32 via sandboxed FFmpeg.
+- **MP4 / M4A**: AAC audio in MP4 container (`audio/mp4`, `audio/aac`). Decoded via sandboxed FFmpeg.
+- **Format Validation**: Header magic bytes are validated before decoding (e.g. `RIFF...WAVE`, `0x1A45DFA3` for WebM, `ftyp` for MP4). Unsupported extensions or spoofed payloads are rejected immediately.
+
+### 3.2 Upload & Duration Bounds
+- **Maximum File Size**: 25 MB.
+- **Duration Range**: Strictly between **1.0 second** and **300.0 seconds** (5 minutes). Uploads outside these bounds are rejected prior to inference.
+
+### 3.3 Normalization & Gain Policy
+- **No Artificial Amplification**: Low-amplitude field recordings are **not** artificially normalized to full scale. Synthetically boosting gain amplifies microphone noise floor and sensor hiss, creating spurious false-positive detections.
+- **Safe Value Clipping**: Samples are hard-clamped to `[-1.0, 1.0]` to guarantee tensor shape stability without arithmetic overflow.
+
+### 3.4 Silence & Clipping Diagnostics
+- **Silence Detection**: Root Mean Square (RMS) energy is computed:
+  $$\text{RMS} = \sqrt{\frac{1}{N} \sum_{i=1}^N x_i^2}$$
+  Recordings with $\text{RMS} < 10^{-4}$ (approximately $-80\text{ dBFS}$) or peak amplitude $< 10^{-3}$ are flagged as silent audio (`is_silent=True`).
+- **Clipping Thresholds**:
+  - Samples with $|x| \ge 0.999$ are counted.
+  - **Diagnostic Warning**: If $> 5\%$ of samples are clipped, an `AudioQualityWarning` is logged for diagnostic inspection.
+  - **Rejection Threshold**: If $> 30\%$ of samples are clipped, the recording is rejected with `AudioClippingError` as excessive acoustic distortion renders spectral features unreliable.
+
+### 3.5 Temporal Window Bounding (Partial Final Window)
+- YAMNet processes audio in 0.975-second windows with 0.4875-second hops.
+- **Bounded Timestamps**: For non-integer multiples of window duration, the final partial window is clamped strictly to the true recording duration:
+  $$\text{end\_timestamp} = \min(\text{start\_timestamp} + 0.975, \text{actual\_duration})$$
+- Padded zeros used to satisfy tensor dimensions are strictly masked from user-facing detection intervals.
+
+---
+
+## 4. Local Offline Operation Guarantee
 
 - Sit Spot downloads weights only once during explicit setup (`scripts/download_model.py`).
 - During recording and inference, no network sockets are opened.
