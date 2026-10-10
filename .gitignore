@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / Frontend
+node_modules/
+dist/
+.vite/
+*.local
+
+# Environment & IDE
+.env
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Sit Spot local audio recordings and weights
+data/recordings/
+models/*.onnx
+models/*.tflite
+!models/.gitkeep

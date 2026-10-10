@@ -1,0 +1,100 @@
+:root {
+  /* Naturalist field notebook palette */
+  --bg-parchment: #f9f6f0;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #f2ece4;
+  --text-primary: #252422;
+  --text-secondary: #58554e;
+  --text-muted: #807c74;
+  --border-subtle: #e3ddd3;
+  --border-accent: #c4baa9;
+  
+  /* Restrained earthy moss accents */
+  --moss-primary: #385438;
+  --moss-hover: #294029;
+  --moss-surface: #edf3ed;
+  --moss-border: #b8ccb8;
+
+  /* Qualitative score band indicators */
+  --band-strong: #2f5933;
+  --band-moderate: #7a6327;
+  --band-suggestive: #6a6760;
+
+  /* Typography */
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* True Dark Listening Mode */
+  --dark-bg: #0d0f0d;
+  --dark-card: #151915;
+  --dark-text: #e6e8e5;
+  --dark-text-muted: #8f968e;
+  --dark-moss: #507d50;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-parchment);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-moss {
+  background-color: var(--moss-surface);
+  color: var(--moss-primary);
+  border: 1px solid var(--moss-border);
+}
+
+.button-primary {
+  background-color: var(--moss-primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.button-primary:hover {
+  background-color: var(--moss-hover);
+}
